@@ -1,6 +1,6 @@
 # Soulify
 
-[![Soulify Logo](./static/images/Logo.png)]
+[!Soulify Logo(./static/images/Logo.png)]
 
 ## Overview
 

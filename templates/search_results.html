@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Search Results</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .result-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .result-item {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .result-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .result-title {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .result-subtitle {
+            font-size: 14px;
+            color: #aaaaaa;
+        }
+
+        button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #1aa34a;
+        }
+    </style>
+
+<script>
+function downloadResult(type, artistName, itemName = '') {
+    console.log("Requesting download for:", type, artistName, itemName); // Debugging log
+
+    let url = '';
+    let data = {};
+
+    // Define the endpoint based on the type of download
+    if (type === 'artist') {
+        url = '/download_artist';
+        data = { artistName: artistName };
+    } else if (type === 'album') {
+        url = '/download_album';
+        data = { artistName: artistName, name: itemName }; // itemName is the album name
+    } else if (type === 'track') {
+        url = '/download_track';
+        data = { artistName: artistName, name: itemName }; // itemName is the track name
+    }
+
+    // Validate data before sending the request
+    if (!artistName) {
+        console.error("Missing artist name for type:", type);
+        alert("Missing artist name. Cannot proceed with the download.");
+        return;
+    }
+
+    // Send the POST request to the Flask route
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(json => {
+        console.log("Server response:", json); // Log the whole response
+        if (json.data && json.command) {
+            alert(`Command: ${json.command}\nData: Artist - ${json.data.artistName}, Item - ${json.data.name || 'N/A'}`);
+        } else {
+            alert('Received unexpected response structure from server.');
+        }
+    })
+    .catch(error => {
+        console.error('Error sending download request:', error);
+        alert('Error sending download request: ' + error.message);
+    });
+}
+
+</script>
+
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>Search Results</h1>
+
+    {% if search_type == "artist" %}
+        <h2>Artists:</h2>
+        <div class="result-list">
+        {% for artist in search_results['artists']['items'] %}
+        <div class="result-item">
+            <img src="{{ artist['images'][0]['url'] if artist['images'] else 'https://cdn.icon-icons.com/icons2/1504/PNG/512/unknown_103657.png' }}" alt="{{ artist['name'] }}">
+            <div class="result-title">{{ artist['name'] }}</div>
+            <!-- Button to download artist -->
+            <button onclick="downloadResult('artist', '{{ artist['name'] }}')">Download Artist</button>
+        </div>
+        {% endfor %}
+        </div>
+
+    {% elif search_type == "album" %}
+        <h2>Albums:</h2>
+        <div class="result-list">
+        {% for album in search_results['albums']['items'] %}
+        <div class="result-item">
+            <img src="{{ album['images'][0]['url'] if album['images'] else 'https://cdn.icon-icons.com/icons2/1504/PNG/512/unknown_103657.png' }}" alt="{{ album['name'] }}">
+            <div class="result-title">{{ album['name'] }}</div>
+            <div class="result-subtitle">by {{ album['artists'][0]['name'] }}</div>
+            <!-- Button to download album -->
+            <button onclick="downloadResult('album', '{{ album['artists'][0]['name'] }}', '{{ album['name'] }}')">Download Album</button>
+        </div>
+        {% endfor %}
+        </div>
+
+    {% elif search_type == "track" %}
+        <h2>Tracks:</h2>
+        <div class="result-list">
+        {% for track in search_results['tracks']['items'] %}
+        <div class="result-item">
+            <img src="{{ track['album']['images'][0]['url'] if track['album']['images'] else 'https://cdn.icon-icons.com/icons2/1504/PNG/512/unknown_103657.png' }}" alt="{{ track['name'] }}">
+            <div class="result-title">{{ track['name'] }}</div>
+            <div class="result-subtitle">by {{ track['artists'][0]['name'] }}</div>
+            <!-- Button to download track -->
+            <button onclick="downloadResult('track', '{{ track['artists'][0]['name'] }}', '{{ track['name'] }}')">Download Track</button>
+        </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>

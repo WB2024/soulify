@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Playlists</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            overflow: hidden; /* Prevent scroll bar issues */
+            margin: 0;
+            padding: 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Flexible columns */
+            gap: 20px;
+            padding: 20px;
+            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: calc(100vh - 40px); /* Limit grid height */
+        }
+        .playlist {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space content evenly */
+            height: 100%; /* Use full height */
+        }
+        .playlist img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .playlist-name {
+            margin-top: 8px;
+            font-size: 14px;
+            display: block; /* Use block to allow natural flow */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Show ellipsis for overflow */
+            height: auto; /* Allow height to adjust based on content */
+            min-height: 38px; /* Minimum height to keep some consistency */
+        }
+
+        .playlist-name a {
+    	    color: #E0E0E0; /* Light gray for better visibility on dark backgrounds */
+            text-decoration: none; /* Optional: removes underline for a cleaner look */
+        }
+
+	    .playlist-name a:hover {
+    	    color: #FFFFFF; /* Brighter white on hover for better interaction feedback */
+    	    text-decoration: underline; /* Optional: underline on hover to indicate interactivity */
+	    }
+
+        .download {
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .download button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .download button:hover {
+            background-color: #1aa34a;
+        }
+    </style>
+    <script>
+function downloadPlaylist(playlistId) {
+    console.log("Playlist ID:", playlistId); // Add this to verify the playlist ID is correct
+
+    const url = '/download_playlist';
+    const data = { playlist_id: playlistId };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(json => {
+        if(json.status === 'queued') {
+            alert(`Command: ${json.command}\nStatus: ${json.status}`);
+        } else {
+            alert(`Error: ${json.message}`); // Update to show error messages from the server
+        }
+    })
+    .catch(error => {
+        console.error('Error downloading playlist:', error);
+        alert('Error sending download request: ' + error.message);
+    });
+
+    return false;
+}
+    </script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>My Playlists</h1>
+    <div class="grid">
+        {% for playlist in playlists %}
+        <div class="playlist">
+            <img src="{{ playlist['images'][0]['url'] if playlist['images'] else 'https://cdn.icon-icons.com/icons2/1504/PNG/512/unknown_103657.png' }}" alt="{{ playlist['name'] }}" loading="lazy">
+            <div class="playlist-name">
+                <a href="/playlisttracks/{{ playlist['id'] }}?playlist_name={{ playlist['name'] }}">{{ playlist['name'] }}</a>
+            </div>
+            <div class="download">
+                <!-- Updated to use JavaScript for downloading playlists -->
+                <button onclick="downloadPlaylist('{{ playlist['id'] }}')">Download</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Download Management</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #1aa34a;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>Download Management</h1>
+
+    <div class="container">
+        <button onclick="location.href='/Download_Current'">Current Download</button>
+        <button onclick="location.href='/Download_Queue'">Download Queue</button>
+        <button onclick="location.href='/Download_History'">Download History</button>
+    </div>
+</body>
+</html>

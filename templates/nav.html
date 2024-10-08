@@ -1,0 +1,42 @@
+<!-- nav.html -->
+<nav>
+    <a href="/" class="nav-button">Home</a>
+    <a href="/playlists" class="nav-button">Playlists</a>
+    <a href="/search" class="nav-button">Search</a>
+    <a href="/login" class="nav-button">Login</a>
+    <a href="/logout" class="nav-button">Logout</a>
+    <a href="/downloads" class="nav-button">Downloads</a>
+    <a href="/settings" class="nav-button">Settings</a>
+
+</nav>
+
+<style>
+    nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #1DB954;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .nav-button {
+        display: inline-block;
+        margin: 0 15px;
+        background-color: #1DB954;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+    }
+
+    .nav-button:hover {
+        background-color: #1aa34a;
+    }
+
+    body {
+        padding-top: 50px; /* To make space for the fixed nav bar */
+    }
+</style>

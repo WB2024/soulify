@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Playlist Tracks</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .track-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .track-item {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .track-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .track-title {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .track-artist {
+            font-size: 14px;
+            color: #aaaaaa;
+        }
+        button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1aa34a;
+        }
+    </style>
+    <script>
+        function downloadTrack(artistName, trackName) {
+            const url = '/download_track';
+            const data = { artistName: artistName, name: trackName };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(json => {
+                alert(`Command: ${json.command}\nStatus: ${json.status}`);
+            })
+            .catch(error => {
+                console.error('Error downloading track:', error);
+                alert('Error sending download request: ' + error.message);
+            });
+        }
+    </script>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>Tracks for Playlist: {{ playlist_name }}</h1>
+    
+    <div class="track-list">
+        {% for track in tracks %}
+        <div class="track-item">
+            <img src="{{ track['track']['album']['images'][0]['url'] if track['track']['album']['images'] else 'https://cdn.icon-icons.com/icons2/1504/PNG/512/unknown_103657.png' }}" alt="{{ track['track']['name'] }}">
+            <div class="track-title">{{ track['track']['name'] }}</div>
+            <div class="track-artist">{{ track['track']['artists'][0]['name'] }}</div>
+            <button onclick="downloadTrack('{{ track['track']['artists'][0]['name'] }}', '{{ track['track']['name'] }}')">Download Track</button>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

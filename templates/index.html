@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Soulify</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            width: 80%;
+        }
+
+        h1 {
+            color: #1DB954; /* Green color to match the button theme */
+            text-transform: uppercase; /* Making the text uppercase for a bold appearance */
+            font-size: 48px; /* Large font size for heading */
+            font-weight: bold; /* Making the font bold */
+            margin-bottom: 20px; /* Space between the heading and the buttons */
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 25px;
+            flex: 1; /* Ensures that the buttons take up equal space within the row */
+        }
+
+        button:hover {
+            background-color: #1aa34a;
+        }
+
+        .logo {
+            width: 300px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Soulify</h1>
+        <img src="/static/images/Logo.png" alt="Soulify Logo" class="logo">
+        <div class="button-row">
+            <button onclick="location.href='/login'">Login</button>
+            <button onclick="location.href='/logout'">Logout</button>
+            <button onclick="location.href='/settings'">Settings</button>
+            <button onclick="location.href='/downloads'">Downloads</button>
+        </div>
+        <div class="button-row">
+            <button onclick="location.href='/playlists'">Playlists</button>
+            <button onclick="location.href='/browse'">Browse (Coming Soon)</button>
+            <button onclick="location.href='/search'">Search</button>
+        </div>
+    </div>
+</body>
+</html>

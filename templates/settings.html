@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .content-box {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="radio"],
+        input[type="submit"] {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            background-color: #555;
+            color: #fff;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>Settings</h1>
+
+    <form method="POST">
+        <h2>Soulseek Settings</h2>
+        <div class="form-group">
+            <label>Soulseek Username:</label>
+            <input type="text" name="username" value="{{ sldl['username'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Soulseek Password:</label>
+            <input type="password" name="password" value="{{ sldl['password'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Downloads Path:</label>
+            <input type="text" name="path" value="{{ sldl['path'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Remove Special Characters:</label>
+            <input type="radio" name="no-remove-special-chars" value="true" {% if sldl['no-remove-special-chars'] == 'true' %}checked{% endif %}> True
+            <input type="radio" name="no-remove-special-chars" value="false" {% if sldl['no-remove-special-chars'] == 'false' %}checked{% endif %}> False
+        </div>
+
+        <div class="form-group">
+            <label>Preferred Download File Format:</label>
+            <input type="text" name="pref-format" value="{{ sldl['pref-format'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Spotify Client ID:</label>
+            <input type="text" name="spotify-id" value="{{ sldl['spotify-id'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Spotify Client Secret:</label>
+            <input type="password" name="spotify-secret" value="{{ sldl['spotify-secret'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Create M3U file for playlists (set to 'none') to disable:</label>
+            <input type="text" name="m3u" value="{{ sldl['m3u'] }}">
+        </div>
+
+        <h2>Application Settings</h2>
+        <div class="form-group">
+            <label>Update Metadata with MusicBrainz - This uses the settings you have set in MusicBrainz:</label>
+            <input type="radio" name="UpdatemetadataWithMusicBrainz" value="true" {% if soulify.UpdatemetadataWithMusicBrainz %}checked{% endif %}> True
+            <input type="radio" name="UpdatemetadataWithMusicBrainz" value="false" {% if not soulify.UpdatemetadataWithMusicBrainz %}checked{% endif %}> False
+        </div>
+
+        <div class="form-group">
+            <label>Update Library and Refresh Jellyfin - Looks for an artist folder in your existing Library to match and import download to:</label>
+            <input type="radio" name="UpdateLibraryMetadataAndRefreshJellyfin" value="true" {% if soulify.UpdateLibraryMetadataAndRefreshJellyfin %}checked{% endif %}> True
+            <input type="radio" name="UpdateLibraryMetadataAndRefreshJellyfin" value="false" {% if not soulify.UpdateLibraryMetadataAndRefreshJellyfin %}checked{% endif %}> False
+        </div>
+		
+		
+		        <!-- pdscript.conf settings -->
+        <h2>Post Download Script Settings</h2>
+        <div class="form-group">
+            <label>Root of Exising Music Library:</label>
+            <input type="text" name="destination_root" value="{{ pdscript['destination_root'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Holding Directory for New Artists:</label>
+            <input type="text" name="new_artists_dir" value="{{ pdscript['new_artists_dir'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>JellyfinHost IP and Port:</label>
+            <input type="text" name="API_BASE_URL" value="{{ pdscript['API_BASE_URL'] }}">
+        </div>
+
+        <div class="form-group">
+            <label>Jellyfin API Key:</label>
+            <input type="text" name="API_AUTH_TOKEN" value="{{ pdscript['API_AUTH_TOKEN'] }}">
+        </div>
+        <input type="submit" value="Save Settings">
+    </form>
+</body>
+</html>
+

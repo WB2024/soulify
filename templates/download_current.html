@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Current Download</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .content-box {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>Current Download</h1>
+
+    <h2>Current Command:</h2>
+    <div class="content-box">{{ current_command }}</div>
+
+    <h2>Command Log:</h2>
+    <div class="content-box">{{ current_log }}</div>
+</body>
+</html>

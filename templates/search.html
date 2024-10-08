@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Search</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+
+        .radio-buttons {
+            margin-top: 20px;
+        }
+
+        input[type="radio"] {
+            margin: 10px;
+        }
+
+        button {
+            background-color: #1DB954;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1aa34a;
+        }
+
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h1>Spotify Search</h1>
+
+    <form method="POST" action="/search">
+        <input type="text" name="search_query" placeholder="Enter search term..." required>
+
+        <div class="radio-buttons">
+            <input type="radio" id="artist" name="search_type" value="artist" required>
+            <label for="artist">Artist Search</label>
+
+            <input type="radio" id="album" name="search_type" value="album" required>
+            <label for="album">Album Search</label>
+
+            <input type="radio" id="track" name="search_type" value="track" required>
+            <label for="track">Track Search</label>
+        </div>
+
+        <br>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+</body>
+</html>

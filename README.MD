@@ -68,19 +68,19 @@ Soulify is a hybrid web application that bridges the gap between Spotify and Sou
     ```bash
     pip install -r requirements.txt
     ```
+4. Download the sldl file from https://github.com/fiso64/slsk-batchdl/releases and place it in the root of the folder. 
 
 
-
-4. Run the application:
-    ```bash
-    python SpotWebApp.py
-    ```
-	
 5. Create a Spotify Developer Account and Create a new Application:
     - Make a note of the applications Client Id and secret.
 	
 6. Update your settings:
     - Update `sldl.conf` with your spotify application credentials credentials and settings (ensure that the redirect url matches the callback url in the developer page in spotify) - you can update these settings in the ui later.
+
+7. Run the application:
+    ```bash
+    python SpotWebApp.py
+    ```
 ---
 
 ## Usage
